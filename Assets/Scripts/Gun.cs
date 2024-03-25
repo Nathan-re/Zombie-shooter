@@ -41,6 +41,7 @@ public class Gun : MonoBehaviour
         ammo.Translate(gameObject.transform.up * 0.032f);
         ammo.transform.rotation = transform.rotation;
         ammo.Rotate(90, 0, 0, Space.Self);
+        ammo.tag = "dealDamage";
         Rigidbody rigidbody = ammo.GetOrAddComponent<Rigidbody>();
         rigidbody.AddForce(transform.forward * 50, ForceMode.Impulse);
     }
