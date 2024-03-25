@@ -1,10 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR;
 
 public class Gun : MonoBehaviour
 {
@@ -12,7 +10,7 @@ public class Gun : MonoBehaviour
     public InputActionReference actionReference;
     public AudioClip[] gunshotSounds;
 
-    private List<AudioSource> audioSources;
+    private readonly List<AudioSource> audioSources = new();
     private int currentSource = 0;
     private readonly System.Random random = new();
 
@@ -21,13 +19,9 @@ public class Gun : MonoBehaviour
     {
         for (int i = 0; i < 2; i++)
         {
-            audioSources.Add(gameObject.AddComponent<AudioSource>());
+            AudioSource source = gameObject.AddComponent<AudioSource>();
+            audioSources.Add(source);
         }
-        audioSources.ForEach(source =>
-        {
-            source.spatialBlend = 0.0f;
-            source.volume = 1.0f;
-        });
         actionReference.action.performed += Shoot;
     }
 
@@ -36,14 +30,18 @@ public class Gun : MonoBehaviour
     /// </summary>
     public void Shoot(InputAction.CallbackContext ctx)
     {
-        var ammo = Instantiate(this.ammo);
-        ammo.transform.rotation = gameObject.transform.rotation;
-        ammo.SetParent(transform);
-        Rigidbody rigidbody = ammo.GetOrAddComponent<Rigidbody>();
-        rigidbody.AddForce(Vector3.forward * 460, ForceMode.Impulse);
-
         AudioClip clip = gunshotSounds[random.Next(0, gunshotSounds.Length)];
         audioSources[currentSource].clip = clip;
+        audioSources[currentSource].Play();
         currentSource = (currentSource + 1) % audioSources.Count;
+
+        var ammo = Instantiate(this.ammo);
+        ammo.AddComponent<MeshCollider>();
+        ammo.transform.position = transform.position;
+        ammo.Translate(gameObject.transform.up * 0.032f);
+        ammo.transform.rotation = transform.rotation;
+        ammo.Rotate(90, 0, 0, Space.Self);
+        Rigidbody rigidbody = ammo.GetOrAddComponent<Rigidbody>();
+        rigidbody.AddForce(transform.forward * 50, ForceMode.Impulse);
     }
 }
