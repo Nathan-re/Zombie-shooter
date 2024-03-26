@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -35,14 +34,13 @@ public class Gun : MonoBehaviour
         audioSources[currentSource].Play();
         currentSource = (currentSource + 1) % audioSources.Count;
 
-        var ammo = Instantiate(this.ammo);
-        ammo.AddComponent<MeshCollider>();
+        var ammo = Instantiate(this.ammo).gameObject;
         ammo.transform.position = transform.position;
-        ammo.Translate(gameObject.transform.up * 0.032f);
+        ammo.transform.Translate(gameObject.transform.up * 0.032f);
         ammo.transform.rotation = transform.rotation;
-        ammo.Rotate(90, 0, 0, Space.Self);
+        ammo.transform.Rotate(90, 0, 0, Space.Self);
         ammo.tag = "dealDamage";
-        Rigidbody rigidbody = ammo.GetOrAddComponent<Rigidbody>();
+        Rigidbody rigidbody = ammo.AddComponent<Rigidbody>();
         rigidbody.AddForce(transform.forward * 50, ForceMode.Impulse);
     }
 }

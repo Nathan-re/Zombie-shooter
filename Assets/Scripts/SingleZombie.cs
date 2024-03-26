@@ -23,9 +23,10 @@ public class SingleZombie : MonoBehaviour
         transformZ.position = p;
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collider)
     {
-        string currentTag = collision.gameObject.tag;
+        Destroy(gameObject);
+        string currentTag = collider.gameObject.tag;
         switch (currentTag)
         {
             case "MainCamera":
@@ -33,6 +34,7 @@ public class SingleZombie : MonoBehaviour
                 break;
             case "dealDamage":
                 Destroy(gameObject);
+                Destroy(collider.gameObject);
                 break;
             default:
                 Debug.Log("Default");
