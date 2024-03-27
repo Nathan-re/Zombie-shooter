@@ -47,7 +47,10 @@ public class SingleZombie : MonoBehaviour
         Vector3 p = Vector3.MoveTowards(transformZ.position, Camera.main.transform.position, vitessZ * Time.deltaTime);
         p.y = transformZ.localScale.y;
         transformZ.position = p;
-        soundAlive();
+        if (hasSound)
+        {
+            soundAlive();
+        }
     }
 
     void OnTriggerEnter(Collider collider)
@@ -77,7 +80,7 @@ public class SingleZombie : MonoBehaviour
 
     private IEnumerator die(bool sound)
     {
-        if (zombieDeath != null && sound)
+        if (zombieDeath != null && sound && hasSound)
         {
             Debug.Log($"ZombieDeath in");
             Debug.Log($"ZombieDeath {zombieDeath} ");
@@ -86,10 +89,15 @@ public class SingleZombie : MonoBehaviour
             GetComponent<Renderer>().enabled = false;
             GetComponent<AudioSource>().clip = zombieDeath;
             GetComponent<AudioSource>().Play();
+            yield return new WaitForSeconds(GetComponent<AudioSource>().clip.length);
+            Destroy(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
 
-        yield return new WaitForSeconds(GetComponent<AudioSource>().clip.length);
-        Destroy(gameObject);
+
 
     }
 

@@ -198,6 +198,7 @@ public class Zombie : MonoBehaviour
             Debug.Log($"Carotte {zombiesLeft}");
         };
         newZ.GetComponent<SingleZombie>().RemoveLifeCallback = () => {
+            zombiesLeft--;
             lives--;
             Debug.Log($"Carotte lives {lives}");
         };

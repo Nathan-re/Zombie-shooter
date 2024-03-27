@@ -1952,6 +1952,13 @@ MonoBehaviour:
   heightZ: 0.5
   minSpeed: 0.5
   maxSpeed: 2
+  currentLevel: 0
+  tagZombies: Zombie
+  zombiesSounds:
+  - {fileID: 8300000, guid: f4f8a148e72d9ea418f1cb50358bf627, type: 3}
+  - {fileID: 8300000, guid: c9f4081f6c812904d94736a5dd454541, type: 3}
+  - {fileID: 8300000, guid: 15010813c40653a4b9a53479fd4a45ab, type: 3}
+  zombieDeath: {fileID: 8300000, guid: d08102b94daa91d41bf87d4dc2373934, type: 3}
 --- !u!4 &1313193282
 Transform:
   m_ObjectHideFlags: 0
