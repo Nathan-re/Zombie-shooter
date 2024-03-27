@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class SingleZombie : MonoBehaviour
 {
-
     public float vitessZ;
     public float minSpeedZ;
     public float maxSpeedZ;
+    public bool alive;
+
+    public delegate void DelegateDieCallback();
+    public DelegateDieCallback DieCallback { get; set; }
+
+    public delegate void DelegateRemoveLifeCallback();
+    public DelegateRemoveLifeCallback RemoveLifeCallback { get; set; }
 
     private Transform transformZ;
     void Start()
     {
         vitessZ = Random.Range(minSpeedZ, maxSpeedZ);
         transformZ = GetComponent<MeshRenderer>().transform;
+        alive = true;
     }
 
     private void Update()
@@ -25,20 +32,27 @@ public class SingleZombie : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
-        Destroy(gameObject);
-        string currentTag = collider.gameObject.tag;
-        switch (currentTag)
+        if (alive)
         {
-            case "MainCamera":
-                Destroy(gameObject);
-                break;
-            case "dealDamage":
-                Destroy(gameObject);
-                Destroy(collider.gameObject);
-                break;
-            default:
-                Debug.Log("Default");
-                break;
+            string currentTag = collider.gameObject.tag;
+            switch (currentTag)
+            {
+                case "MainCamera":
+                    Destroy(gameObject);
+                    RemoveLifeCallback();
+                    alive = false;
+                    break;
+                case "dealDamage":
+                    Destroy(gameObject);
+                    Destroy(collider.gameObject);
+                    DieCallback();
+                    alive = false;
+                    break;
+                default:
+                    Debug.Log("Default");
+                    break;
+            }
         }
+
     }
 }
