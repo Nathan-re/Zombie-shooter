@@ -24,8 +24,8 @@ public class UI : MonoBehaviour
     public GameObject bulletsTmpContainer;
     private TextMeshProUGUI bulletsTmp;
 
-    public float health;
-    public float maxHealth;
+    public float health = 0;
+    public float maxHealth = 0;
 
     public int waveNo = 0;
     public int kills = 0;
@@ -43,8 +43,6 @@ public class UI : MonoBehaviour
         killsTmp = ennemiesInfoContainer.transform.Find("Kills").GetComponent<TextMeshProUGUI>();
         bulletsTmp = bulletsTmpContainer.GetComponent<TextMeshProUGUI>();
         remainingTmp = ennemiesInfoContainer.transform.Find("Remaining").GetComponent<TextMeshProUGUI>();
-        health = 90;
-        maxHealth = 100;
     }
 
     void Update()
@@ -60,6 +58,8 @@ public class UI : MonoBehaviour
 
         // Compteur de balles
         bulletsTmp.text = $"{bullets}/{maxBullets}";
+        if (bullets == 0) bulletsTmp.color = Color.red;
+        else bulletsTmp.color = Color.white;
 
         // Ennemis
         waveNoTmp.text = $"Vague n°{waveNo+1}";

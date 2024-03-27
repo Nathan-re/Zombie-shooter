@@ -14,9 +14,12 @@ public class Gun : MonoBehaviour
     private int currentSource = 0;
     private readonly System.Random random = new();
 
+    private UI ui;
+
     // Start is called before the first frame update
     void Start()
     {
+        ui = GameObject.Find("UI").GetComponent<UI>();
         for (int i = 0; i < 2; i++)
         {
             AudioSource source = gameObject.AddComponent<AudioSource>();
@@ -33,20 +36,29 @@ public class Gun : MonoBehaviour
     /// </summary>
     public void Shoot(InputAction.CallbackContext ctx)
     {
-        AudioClip clip = gunshotSounds[random.Next(0, gunshotSounds.Length)];
-        audioSources[currentSource].clip = clip;
-        audioSources[currentSource].Play();
-        currentSource = (currentSource + 1) % audioSources.Count;
+        bool canShoot = ui.bullets > 0;
+        if (canShoot)
+        {
+            AudioClip clip = gunshotSounds[random.Next(0, gunshotSounds.Length)];
+            audioSources[currentSource].clip = clip;
+            audioSources[currentSource].Play();
+            currentSource = (currentSource + 1) % audioSources.Count;
 
-        var ammo = Instantiate(this.ammo).gameObject;
-        ammo.transform.position = transform.position;
-        ammo.transform.Translate(gameObject.transform.up * 0.032f);
-        ammo.transform.rotation = transform.rotation;
-        ammo.transform.Rotate(90, 0, 0, Space.Self);
-        ammo.tag = "dealDamage";
-        // Trail
-        // Instantiate(trail, ammo.transform);
-        Rigidbody rigidbody = ammo.AddComponent<Rigidbody>();
-        rigidbody.AddForce(transform.forward * 50, ForceMode.Impulse);
+            var ammo = Instantiate(this.ammo).gameObject;
+            ammo.transform.position = transform.position;
+            ammo.transform.Translate(gameObject.transform.up * 0.032f);
+            ammo.transform.rotation = transform.rotation;
+            ammo.transform.Rotate(90, 0, 0, Space.Self);
+            ammo.tag = "dealDamage";
+            // Trail
+            // Instantiate(trail, ammo.transform);
+            Rigidbody rigidbody = ammo.AddComponent<Rigidbody>();
+            rigidbody.AddForce(transform.forward * 50, ForceMode.Impulse);
+            ui.bullets--;
+        }
+        else
+        {
+            // TODO: jouer un son pour dire qu'il n'y a plus de balles
+        }
     }
 }
