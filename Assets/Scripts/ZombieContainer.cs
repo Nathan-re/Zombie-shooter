@@ -82,7 +82,7 @@ public class Zombie : MonoBehaviour
             new LevelData
             {
                 numberZombies = 30,
-                numberLives = 1,
+                numberLives = 3,
                 minSpeedZombie = 3f,
                 maxSpeedZombie = 4f,
                 minTimeSpawn = 0.25f,
@@ -135,9 +135,7 @@ public class Zombie : MonoBehaviour
                 killAllByTag(tagZombies);
                 break;
             }
-            Debug.Log("Carotte End Round");
             yield return new WaitForSeconds(3);
-            Debug.Log("Carotte End Round Waited");
         }
     }
 
@@ -174,8 +172,10 @@ public class Zombie : MonoBehaviour
             ui.ennemiesRemaining--; 
         };
         newZ.GetComponent<SingleZombie>().RemoveLifeCallback = () => {
+            zombiesLeft--;
             lives--;
             ui.health--;
+            ui.ennemiesRemaining--;
         };
 
         //Calcul du nouveau temps
@@ -190,7 +190,7 @@ public class Zombie : MonoBehaviour
         GameObject[] allZombies = GameObject.FindGameObjectsWithTag(tag);
         for (int i = 0; i < allZombies.Length; i++)
         {
-            Destroy(allZombies[i]);
+            Destroy(allZombies[i]); 
         }
     }
 }
