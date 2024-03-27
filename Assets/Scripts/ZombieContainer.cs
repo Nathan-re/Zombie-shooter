@@ -63,7 +63,7 @@ public class Zombie : MonoBehaviour
                 minTimeSpawn = 1f,
                 maxTimeSpawn = 2f,
                 numberBullets = (int) (10 * 2),
-                distanceFromCamera = 12.5f,
+                distanceFromCamera = 10f,
             },
             new LevelData
             {
@@ -74,19 +74,52 @@ public class Zombie : MonoBehaviour
                 minTimeSpawn = 0.5f,
                 maxTimeSpawn = 1.5f,
                 numberBullets = (int) (20 * 1.5),
-                distanceFromCamera = 15f,
+                distanceFromCamera = 8f,
             },
             new LevelData
             {
                 numberZombies = 30,
-                numberLives = 1,
+                numberLives = 2,
                 minSpeedZombie = 3f,
                 maxSpeedZombie = 4f,
                 minTimeSpawn = 0.25f,
                 maxTimeSpawn = 1f,
                 numberBullets = (int) (30 * 1.5),
-                distanceFromCamera = 15f,
-            }
+                distanceFromCamera = 8f,
+            },
+            new LevelData
+            {
+                numberZombies = 40,
+                numberLives = 2,
+                minSpeedZombie = 4f,
+                maxSpeedZombie = 5f,
+                minTimeSpawn = 0.25f,
+                maxTimeSpawn = 0.75f,
+                numberBullets = (int) (40 * 1.5),
+                distanceFromCamera = 8f,
+            },
+            new LevelData
+            {
+                numberZombies = 50,
+                numberLives = 1,
+                minSpeedZombie = 5f,
+                maxSpeedZombie = 6f,
+                minTimeSpawn = 0.25f,
+                maxTimeSpawn = 0.5f,
+                numberBullets = (int) (50 * 1.5),
+                distanceFromCamera = 10f,
+            },
+            new LevelData
+            {
+                numberZombies = 10000,
+                numberLives = 1,
+                minSpeedZombie = 5f,
+                maxSpeedZombie = 6f,
+                minTimeSpawn = 0.25f,
+                maxTimeSpawn = 0.5f,
+                numberBullets = (int) (10000 * 1.5),
+                distanceFromCamera = 10f,
+            },
         };
 
         protocol = new Protocol(levelData);
@@ -102,6 +135,8 @@ public class Zombie : MonoBehaviour
             maxSpeed = protocol.levels[i].maxSpeedZombie;
             lives = protocol.levels[i].numberLives;
             zombiesLeft = protocol.levels[i].numberZombies;
+            distanceFromCamera = protocol.levels[i].distanceFromCamera;
+
             totalZombiesSpawned = 0;
 
             while ( totalZombiesSpawned != protocol.levels[i].numberZombies )
