@@ -19,9 +19,12 @@ public class Zombie : MonoBehaviour
     private int lives;
     private int zombiesLeft;
     private int totalZombiesSpawned;
+    private int numberBullets = 0;
     public string tagZombies = "Zombie";
     public List<AudioClip> zombiesSounds = new();
     public AudioClip zombieDeath;
+
+    private UI ui;
 
     [System.Serializable]
     public class Protocol
@@ -53,7 +56,7 @@ public class Zombie : MonoBehaviour
 
     private IEnumerator Start()
     {
-
+        ui = GameObject.Find("UI").GetComponent<UI>();
         LevelData[] levelData = new LevelData[]
         {
             new LevelData
@@ -140,6 +143,15 @@ public class Zombie : MonoBehaviour
             distanceFromCamera = protocol.levels[i].distanceFromCamera;
 
             totalZombiesSpawned = 0;
+            numberBullets = protocol.levels[i].numberBullets;
+
+            ui.maxHealth = lives;
+            ui.health = lives;
+            ui.maxBullets = numberBullets;
+            ui.bullets = numberBullets;
+            ui.ennemiesRemaining = zombiesLeft;
+            ui.kills = 0;
+            ui.waveNo = i;
 
             while ( totalZombiesSpawned != protocol.levels[i].numberZombies )
             {
@@ -195,12 +207,13 @@ public class Zombie : MonoBehaviour
         newZ.GetComponent<SingleZombie>().maxSpeedZ = maxSpeed;
         newZ.GetComponent<SingleZombie>().DieCallback = () => {
             zombiesLeft--;
-            Debug.Log($"Carotte {zombiesLeft}");
+            ui.kills++;
+            ui.ennemiesRemaining--; 
         };
         newZ.GetComponent<SingleZombie>().RemoveLifeCallback = () => {
             zombiesLeft--;
             lives--;
-            Debug.Log($"Carotte lives {lives}");
+            ui.health--;
         };
         newZ.GetComponent<SingleZombie>().zombieDeath = zombieDeath;
         newZ.GetComponent<SingleZombie>().zombiesSounds = zombiesSounds;
