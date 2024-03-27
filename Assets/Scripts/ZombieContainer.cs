@@ -172,9 +172,7 @@ public class Zombie : MonoBehaviour
                 killAllByTag(tagZombies);
                 break;
             }
-            Debug.Log("Carotte End Round");
             yield return new WaitForSeconds(3);
-            Debug.Log("Carotte End Round Waited");
         }
     }
 
@@ -214,6 +212,7 @@ public class Zombie : MonoBehaviour
             zombiesLeft--;
             lives--;
             ui.health--;
+            ui.ennemiesRemaining--;
         };
         newZ.GetComponent<SingleZombie>().zombieDeath = zombieDeath;
         newZ.GetComponent<SingleZombie>().zombiesSounds = zombiesSounds;

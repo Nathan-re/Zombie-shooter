@@ -82,9 +82,6 @@ public class SingleZombie : MonoBehaviour
     {
         if (zombieDeath != null && sound && hasSound)
         {
-            Debug.Log($"ZombieDeath in");
-            Debug.Log($"ZombieDeath {zombieDeath} ");
-
             GetComponent<AudioSource>().Stop();
             GetComponent<Renderer>().enabled = false;
             GetComponent<AudioSource>().clip = zombieDeath;
