@@ -20,6 +20,8 @@ public class Zombie : MonoBehaviour
     private int zombiesLeft;
     private int totalZombiesSpawned;
     public string tagZombies = "Zombie";
+    public List<AudioClip> zombiesSounds = new();
+    public AudioClip zombieDeath;
 
     [System.Serializable]
     public class Protocol
@@ -94,7 +96,7 @@ public class Zombie : MonoBehaviour
                 minSpeedZombie = 4f,
                 maxSpeedZombie = 5f,
                 minTimeSpawn = 0.25f,
-                maxTimeSpawn = 0.75f,
+                maxTimeSpawn = 0.5f,
                 numberBullets = (int) (40 * 1.5),
                 distanceFromCamera = 8f,
             },
@@ -105,9 +107,9 @@ public class Zombie : MonoBehaviour
                 minSpeedZombie = 5f,
                 maxSpeedZombie = 6f,
                 minTimeSpawn = 0.25f,
-                maxTimeSpawn = 0.5f,
+                maxTimeSpawn = 0.4f,
                 numberBullets = (int) (50 * 1.5),
-                distanceFromCamera = 10f,
+                distanceFromCamera = 9f,
             },
             new LevelData
             {
@@ -116,9 +118,9 @@ public class Zombie : MonoBehaviour
                 minSpeedZombie = 5f,
                 maxSpeedZombie = 6f,
                 minTimeSpawn = 0.25f,
-                maxTimeSpawn = 0.5f,
+                maxTimeSpawn = 0.35f,
                 numberBullets = (int) (10000 * 1.5),
-                distanceFromCamera = 10f,
+                distanceFromCamera = 9f,
             },
         };
 
@@ -199,6 +201,8 @@ public class Zombie : MonoBehaviour
             lives--;
             Debug.Log($"Carotte lives {lives}");
         };
+        newZ.GetComponent<SingleZombie>().zombieDeath = zombieDeath;
+        newZ.GetComponent<SingleZombie>().zombiesSounds = zombiesSounds;
 
         //Calcul du nouveau temps
         nextSpawn = Random.Range(minTime, maxTime);

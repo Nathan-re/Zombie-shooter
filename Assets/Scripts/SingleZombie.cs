@@ -8,6 +8,10 @@ public class SingleZombie : MonoBehaviour
     public float minSpeedZ;
     public float maxSpeedZ;
     public bool alive;
+    public bool hasSound;
+
+    public List<AudioClip> zombiesSounds { get; set; }
+    public AudioClip zombieDeath { get; set; }
 
     public delegate void DelegateDieCallback();
     public DelegateDieCallback DieCallback { get; set; }
@@ -21,6 +25,21 @@ public class SingleZombie : MonoBehaviour
         vitessZ = Random.Range(minSpeedZ, maxSpeedZ);
         transformZ = GetComponent<MeshRenderer>().transform;
         alive = true;
+
+        if (zombiesSounds.Count != 0)
+        {
+            AudioClip clip = zombiesSounds[(int)(Mathf.Round(Random.Range(0, zombiesSounds.Count - 1)))];
+            gameObject.AddComponent<AudioSource>().clip = clip;
+            GetComponent<AudioSource>().Play();
+            GetComponent<AudioSource>().spatialBlend = 1;
+            GetComponent<AudioSource>().maxDistance = 30;
+            hasSound = true;
+        }
+        else
+        {
+            hasSound = false;
+        }
+        
     }
 
     private void Update()
@@ -28,6 +47,7 @@ public class SingleZombie : MonoBehaviour
         Vector3 p = Vector3.MoveTowards(transformZ.position, Camera.main.transform.position, vitessZ * Time.deltaTime);
         p.y = transformZ.localScale.y;
         transformZ.position = p;
+        soundAlive();
     }
 
     void OnTriggerEnter(Collider collider)
@@ -38,21 +58,48 @@ public class SingleZombie : MonoBehaviour
             switch (currentTag)
             {
                 case "MainCamera":
-                    Destroy(gameObject);
-                    RemoveLifeCallback();
                     alive = false;
+                    RemoveLifeCallback();
+                    StartCoroutine(die(false));
                     break;
                 case "dealDamage":
-                    Destroy(gameObject);
-                    Destroy(collider.gameObject);
-                    DieCallback();
                     alive = false;
+                    DieCallback();
+                    StartCoroutine(die(true));
+                    Destroy(collider.gameObject);
                     break;
                 default:
-                    Debug.Log("Default");
                     break;
             }
         }
 
+    }
+
+    private IEnumerator die(bool sound)
+    {
+        if (zombieDeath != null && sound)
+        {
+            Debug.Log($"ZombieDeath in");
+            Debug.Log($"ZombieDeath {zombieDeath} ");
+
+            GetComponent<AudioSource>().Stop();
+            GetComponent<Renderer>().enabled = false;
+            GetComponent<AudioSource>().clip = zombieDeath;
+            GetComponent<AudioSource>().Play();
+        }
+
+        yield return new WaitForSeconds(GetComponent<AudioSource>().clip.length);
+        Destroy(gameObject);
+
+    }
+
+    private void soundAlive()
+    {
+        if (hasSound && !GetComponent<AudioSource>().isPlaying && alive)
+        {
+            AudioClip clip = zombiesSounds[(int)(Mathf.Round(Random.Range(0, zombiesSounds.Count - 1)))];
+            GetComponent<AudioSource>().clip = clip;
+            GetComponent<AudioSource>().Play();
+        }
     }
 }
