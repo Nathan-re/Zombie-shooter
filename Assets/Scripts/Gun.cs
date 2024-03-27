@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class Gun : MonoBehaviour
 {
     public Transform ammo;
+    public Transform trail;
     public InputActionReference actionReference;
     public AudioClip[] gunshotSounds;
 
@@ -19,6 +20,9 @@ public class Gun : MonoBehaviour
         for (int i = 0; i < 2; i++)
         {
             AudioSource source = gameObject.AddComponent<AudioSource>();
+            source.spatialize = false;
+            source.spatialBlend = 0.0f;
+            source.volume = 1.0f;
             audioSources.Add(source);
         }
         actionReference.action.performed += Shoot;
@@ -40,6 +44,8 @@ public class Gun : MonoBehaviour
         ammo.transform.rotation = transform.rotation;
         ammo.transform.Rotate(90, 0, 0, Space.Self);
         ammo.tag = "dealDamage";
+        // Trail
+        // Instantiate(trail, ammo.transform);
         Rigidbody rigidbody = ammo.AddComponent<Rigidbody>();
         rigidbody.AddForce(transform.forward * 50, ForceMode.Impulse);
     }
