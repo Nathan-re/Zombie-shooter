@@ -62,7 +62,7 @@ public class Zombie : MonoBehaviour
             new LevelData
             {
                 numberZombies = 10,
-                numberLives = 3,
+                numberLives = 5,
                 minSpeedZombie = 1.5f,
                 maxSpeedZombie = 2.5f,
                 minTimeSpawn = 1f,
@@ -73,18 +73,18 @@ public class Zombie : MonoBehaviour
             new LevelData
             {
                 numberZombies = 20,
-                numberLives = 2,
-                minSpeedZombie = 2.5f,
+                numberLives = 4,
+                minSpeedZombie = 3f,
                 maxSpeedZombie = 3.5f,
                 minTimeSpawn = 0.5f,
-                maxTimeSpawn = 1.5f,
+                maxTimeSpawn = 1f,
                 numberBullets = (int) (20 * 1.5),
                 distanceFromCamera = 8f,
             },
             new LevelData
             {
                 numberZombies = 30,
-                numberLives = 2,
+                numberLives = 3,
                 minSpeedZombie = 3f,
                 maxSpeedZombie = 4f,
                 minTimeSpawn = 0.25f,
@@ -95,7 +95,7 @@ public class Zombie : MonoBehaviour
             new LevelData
             {
                 numberZombies = 40,
-                numberLives = 2,
+                numberLives = 3,
                 minSpeedZombie = 4f,
                 maxSpeedZombie = 5f,
                 minTimeSpawn = 0.25f,
@@ -106,7 +106,7 @@ public class Zombie : MonoBehaviour
             new LevelData
             {
                 numberZombies = 50,
-                numberLives = 1,
+                numberLives = 3,
                 minSpeedZombie = 5f,
                 maxSpeedZombie = 6f,
                 minTimeSpawn = 0.25f,
@@ -117,11 +117,11 @@ public class Zombie : MonoBehaviour
             new LevelData
             {
                 numberZombies = 10000,
-                numberLives = 1,
+                numberLives = 3,
                 minSpeedZombie = 5f,
                 maxSpeedZombie = 6f,
                 minTimeSpawn = 0.25f,
-                maxTimeSpawn = 0.35f,
+                maxTimeSpawn = 0.4f,
                 numberBullets = (int) (10000 * 1.5),
                 distanceFromCamera = 9f,
             },
